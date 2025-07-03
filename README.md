@@ -2,6 +2,12 @@
 
 Bu proje Next.js (App Router) kullanılarak geliştirilmiş eğlenceli bir soru-cevap testi uygulamasıdır.
 
+## 🎉 Canlı Demo
+
+Uygulamayı denemek isterseniz: **[https://main.d1qonicguox15j.amplifyapp.com/](https://main.d1qonicguox15j.amplifyapp.com/)**
+
+> 🎮 Melisa'yı ne kadar iyi tanıyorsunuz? 20 soruluk bu eğlenceli testte lavlara düşmeden hedefe ulaşmaya çalışın!
+
 ## 🎮 Özellikler
 
 - 20 soruluk çoktan seçmeli test
