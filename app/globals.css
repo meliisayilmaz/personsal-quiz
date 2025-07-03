@@ -1,0 +1,773 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, 
+    #9370DB 0%,     /* Daha koyu mor üst gökyüzü */
+    #BA55D3 15%,    /* Orta mor */
+    #DDA0DD 30%,    /* Mor pembe */
+    #FFB6C1 45%,    /* Pembe */
+    #FFA07A 60%,    /* Koyu somon turuncu */
+    #FFD700 75%,    /* Altın sarısı */
+    #FFF8DC 85%,    /* Açık sarı */
+    #FFFACD 100%    /* Krem sarısı */
+  );
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Uçan Kuşlar Katmanı */
+body > * {
+  position: relative;
+}
+
+.sky-birds {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Kuş Grubu 1 - Sol Üst */
+    radial-gradient(ellipse 3px 1px at 15% 25%, #333 40%, transparent 50%),
+    radial-gradient(ellipse 3px 1px at 17% 24%, #333 40%, transparent 50%),
+    radial-gradient(ellipse 3px 1px at 19% 26%, #333 40%, transparent 50%),
+    radial-gradient(ellipse 3px 1px at 21% 25%, #333 40%, transparent 50%),
+    radial-gradient(ellipse 3px 1px at 23% 27%, #333 40%, transparent 50%),
+    
+    /* Kuş Grubu 2 - Orta */
+    radial-gradient(ellipse 2px 1px at 45% 35%, #222 40%, transparent 50%),
+    radial-gradient(ellipse 2px 1px at 47% 34%, #222 40%, transparent 50%),
+    radial-gradient(ellipse 2px 1px at 49% 36%, #222 40%, transparent 50%),
+    radial-gradient(ellipse 2px 1px at 51% 35%, #222 40%, transparent 50%),
+    
+    /* Kuş Grubu 3 - Sağ Üst */
+    radial-gradient(ellipse 4px 2px at 75% 20%, #111 40%, transparent 50%),
+    radial-gradient(ellipse 4px 2px at 78% 19%, #111 40%, transparent 50%),
+    radial-gradient(ellipse 4px 2px at 81% 21%, #111 40%, transparent 50%),
+    radial-gradient(ellipse 4px 2px at 84% 20%, #111 40%, transparent 50%),
+    radial-gradient(ellipse 4px 2px at 87% 22%, #111 40%, transparent 50%),
+    radial-gradient(ellipse 4px 2px at 90% 21%, #111 40%, transparent 50%),
+    
+    /* Kuş Grubu 4 - Uzak Küçükler */
+    radial-gradient(ellipse 1px 1px at 35% 15%, #444 40%, transparent 50%),
+    radial-gradient(ellipse 1px 1px at 37% 14%, #444 40%, transparent 50%),
+    radial-gradient(ellipse 1px 1px at 39% 16%, #444 40%, transparent 50%),
+    radial-gradient(ellipse 1px 1px at 65% 30%, #444 40%, transparent 50%),
+    radial-gradient(ellipse 1px 1px at 67% 29%, #444 40%, transparent 50%);
+  pointer-events: none;
+  z-index: 3;
+  animation: birdsFloat 60s linear infinite;
+}
+
+/* Güneş - Koyu Sarı Turuncu */
+body::before {
+  content: '';
+  position: fixed;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, #FFD700 0%, #FFA500 30%, #FF8C00 60%, #FF7F00 100%);
+  border-radius: 50%;
+  top: 8%;
+  right: 8%;
+  box-shadow: 
+    0 0 60px rgba(255, 215, 0, 0.9),
+    0 0 120px rgba(255, 165, 0, 0.7),
+    0 0 180px rgba(255, 140, 0, 0.5);
+  z-index: 1;
+}
+
+/* Belirgin Bulut Katmanları */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Koyu Bulutlar - Belirgin Hatlar */
+    radial-gradient(ellipse 160px 55px at 8% 15%, rgba(169, 169, 169, 0.95) 0%, rgba(211, 211, 211, 0.5) 40%, transparent 75%),
+    radial-gradient(ellipse 140px 45px at 18% 22%, rgba(128, 128, 128, 0.85) 0%, rgba(169, 169, 169, 0.4) 35%, transparent 70%),
+    radial-gradient(ellipse 120px 40px at 28% 18%, rgba(147, 112, 219, 0.9) 0%, rgba(186, 85, 211, 0.5) 40%, transparent 75%),
+    radial-gradient(ellipse 100px 35px at 38% 25%, rgba(160, 160, 160, 0.8) 0%, rgba(192, 192, 192, 0.4) 35%, transparent 70%),
+    
+    /* Açık Bulutlar - Belirgin Hatlar */
+    radial-gradient(ellipse 180px 60px at 50% 20%, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.6) 45%, transparent 75%),
+    radial-gradient(ellipse 150px 50px at 62% 15%, rgba(248, 248, 255, 0.9) 0%, rgba(230, 230, 250, 0.5) 40%, transparent 70%),
+    radial-gradient(ellipse 130px 45px at 72% 25%, rgba(245, 245, 245, 0.85) 0%, rgba(220, 220, 220, 0.4) 35%, transparent 70%),
+    
+    /* Orta Katman - Belirgin Bulutlar */
+    radial-gradient(ellipse 200px 70px at 12% 40%, rgba(255, 192, 203, 0.9) 0%, rgba(255, 182, 193, 0.5) 45%, transparent 75%),
+    radial-gradient(ellipse 170px 55px at 25% 45%, rgba(176, 176, 176, 0.8) 0%, rgba(211, 211, 211, 0.4) 40%, transparent 70%),
+    radial-gradient(ellipse 150px 50px at 40% 35%, rgba(221, 160, 221, 0.85) 0%, rgba(238, 130, 238, 0.5) 40%, transparent 75%),
+    
+    /* Alt Katman - Karma Belirgin Bulutlar */
+    radial-gradient(ellipse 220px 80px at 5% 65%, rgba(255, 218, 185, 0.85) 0%, rgba(255, 228, 181, 0.5) 45%, transparent 75%),
+    radial-gradient(ellipse 180px 60px at 20% 70%, rgba(190, 190, 190, 0.8) 0%, rgba(220, 220, 220, 0.4) 40%, transparent 70%),
+    radial-gradient(ellipse 200px 70px at 35% 60%, rgba(255, 228, 181, 0.9) 0%, rgba(255, 218, 185, 0.5) 45%, transparent 75%),
+    radial-gradient(ellipse 170px 55px at 55% 70%, rgba(255, 250, 205, 0.85) 0%, rgba(255, 255, 224, 0.4) 40%, transparent 70%),
+    radial-gradient(ellipse 190px 65px at 75% 65%, rgba(200, 200, 200, 0.8) 0%, rgba(230, 230, 230, 0.4) 40%, transparent 75%),
+    radial-gradient(ellipse 160px 50px at 90% 70%, rgba(255, 248, 220, 0.9) 0%, rgba(255, 250, 205, 0.5) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+  animation: cloudFloat 45s ease-in-out infinite;
+}
+
+/* Bulut animasyonu */
+@keyframes cloudFloat {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+  25% {
+    transform: translateX(10px) translateY(-5px);
+  }
+  50% {
+    transform: translateX(5px) translateY(10px);
+  }
+  75% {
+    transform: translateX(-5px) translateY(5px);
+  }
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+}
+
+/* Kuş Uçuş Animasyonu */
+@keyframes birdsFloat {
+  0% {
+    transform: translateX(-50px) translateY(0px);
+  }
+  25% {
+    transform: translateX(25px) translateY(-10px);
+  }
+  50% {
+    transform: translateX(0px) translateY(5px);
+  }
+  75% {
+    transform: translateX(-25px) translateY(-5px);
+  }
+  100% {
+    transform: translateX(-50px) translateY(0px);
+  }
+}
+
+.quiz-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.question-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 2rem 0.2rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 0.5rem;
+}
+
+.question-card {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.2rem;
+}
+
+.quiz-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+  background: linear-gradient(45deg, 
+    #ff6b6b 0%, 
+    #4ecdc4 25%, 
+    #45b7d1 50%, 
+    #96ceb4 75%, 
+    #ffecd2 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 15;
+}
+
+/* Yanıp sönen renk animasyonu */
+@keyframes rainbowGlow {
+  0% {
+    background-position: 0% 50%;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+  }
+  25% {
+    background-position: 25% 50%;
+    text-shadow: 0 0 20px rgba(78, 205, 196, 0.8);
+  }
+  50% {
+    background-position: 50% 50%;
+    text-shadow: 0 0 20px rgba(69, 183, 209, 0.8);
+  }
+  75% {
+    background-position: 75% 50%;
+    text-shadow: 0 0 20px rgba(150, 206, 180, 0.8);
+  }
+  100% {
+    background-position: 100% 50%;
+    text-shadow: 0 0 20px rgba(255, 236, 210, 0.8);
+  }
+}
+
+/* Büyüme-küçülme animasyonu */
+@keyframes textPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.question-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.6;
+  text-shadow: 
+    3px 3px 12px rgba(255, 255, 255, 0.95),
+    0 0 15px rgba(255, 255, 255, 0.9),
+    -1px -1px 6px rgba(255, 255, 255, 0.8);
+}
+
+.question-number {
+  background: #FFF8DC;
+  color: #2c3e50;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.option-button {
+  background: linear-gradient(135deg, #FFF8DC 0%, #FFFDD0 100%);
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  color: #2c3e50;
+  font-weight: 500;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.option-button:hover {
+  background: linear-gradient(135deg, #9370DB 0%, #7B68EE 100%);
+  color: white;
+  border-color: #7B68EE;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(147, 112, 219, 0.3);
+}
+
+.option-button:active {
+  transform: translateY(0);
+}
+
+.game-area {
+  height: 300px;
+  position: relative;
+  background: transparent;
+  border-top: none;
+  overflow: hidden;
+}
+
+/* 20 Platform Kontrollü Kayma Sistemi */
+/* Platform stilleri kaldırıldı - yeniden yapılacak */
+
+/* Şiddetli Üçgen Ateş Zemini */
+.lava-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg,
+    #ffff00 0%,
+    #ffa500 15%,
+    #ff6347 30%,
+    #ff4500 45%,
+    #dc143c 65%,
+    #8b0000 80%,
+    #4b0000 100%
+  );
+  box-shadow: 
+    0 0 25px #ff6347,
+    0 0 50px #ff4500,
+    0 0 75px #dc143c,
+    inset 0 -30px 40px rgba(255, 255, 0, 0.4);
+  overflow: hidden;
+  z-index: 1;
+  animation: fireGlow 2.8s ease-in-out infinite alternate;
+}
+
+/* Üçgen Şeklinde Ana Alevler */
+.lava-floor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse 4% 80% at 2% 100%, #ffff00 0%, #ffa500 30%, #ff4500 60%, transparent 85%),
+    radial-gradient(ellipse 6% 90% at 6% 100%, #ffa500 0%, #ff6347 40%, #dc143c 70%, transparent 90%),
+    radial-gradient(ellipse 3% 70% at 11% 100%, #ffff00 0%, #ff4500 50%, transparent 80%),
+    radial-gradient(ellipse 8% 95% at 16% 100%, #ffa500 0%, #dc143c 60%, #8b0000 80%, transparent 95%),
+    radial-gradient(ellipse 5% 85% at 22% 100%, #ffff00 0%, #ff6347 45%, transparent 85%),
+    radial-gradient(ellipse 4% 75% at 28% 100%, #ff6347 0%, #dc143c 55%, transparent 75%),
+    radial-gradient(ellipse 7% 100% at 34% 100%, #ffa500 0%, #ff4500 50%, #8b0000 80%, transparent 100%),
+    radial-gradient(ellipse 3% 65% at 40% 100%, #ffff00 0%, #ff6347 40%, transparent 70%),
+    radial-gradient(ellipse 6% 90% at 46% 100%, #ff6347 0%, #dc143c 60%, transparent 85%),
+    radial-gradient(ellipse 4% 80% at 52% 100%, #ffa500 0%, #ff4500 50%, transparent 80%),
+    radial-gradient(ellipse 8% 95% at 58% 100%, #ffff00 0%, #dc143c 65%, #8b0000 85%, transparent 95%),
+    radial-gradient(ellipse 5% 75% at 65% 100%, #ff6347 0%, #ff4500 45%, transparent 75%),
+    radial-gradient(ellipse 3% 70% at 71% 100%, #ffa500 0%, #dc143c 50%, transparent 70%),
+    radial-gradient(ellipse 7% 85% at 77% 100%, #ffff00 0%, #ff6347 55%, transparent 85%),
+    radial-gradient(ellipse 4% 75% at 83% 100%, #ff4500 0%, #dc143c 50%, transparent 75%),
+    radial-gradient(ellipse 6% 90% at 89% 100%, #ffa500 0%, #8b0000 70%, transparent 90%),
+    radial-gradient(ellipse 5% 80% at 95% 100%, #ffff00 0%, #ff6347 60%, transparent 80%),
+    radial-gradient(ellipse 3% 65% at 98% 100%, #ff6347 0%, #dc143c 45%, transparent 65%);
+  animation: triangularFlames 2.2s ease-in-out infinite;
+}
+
+/* Üçgen Detay Alev Katmanı */
+.lava-floor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse 2% 60% at 4% 100%, #ff6347 0%, transparent 70%),
+    radial-gradient(ellipse 3% 75% at 9% 100%, #ff4500 0%, transparent 80%),
+    radial-gradient(ellipse 2% 55% at 14% 100%, #ffa500 0%, transparent 65%),
+    radial-gradient(ellipse 4% 85% at 19% 100%, #ffff00 0%, transparent 85%),
+    radial-gradient(ellipse 2% 65% at 25% 100%, #dc143c 0%, transparent 70%),
+    radial-gradient(ellipse 3% 70% at 31% 100%, #ff6347 0%, transparent 75%),
+    radial-gradient(ellipse 2% 50% at 37% 100%, #ff4500 0%, transparent 60%),
+    radial-gradient(ellipse 4% 90% at 43% 100%, #ffa500 0%, transparent 90%),
+    radial-gradient(ellipse 2% 60% at 49% 100%, #ffff00 0%, transparent 70%),
+    radial-gradient(ellipse 3% 75% at 55% 100%, #dc143c 0%, transparent 80%),
+    radial-gradient(ellipse 2% 55% at 61% 100%, #ff6347 0%, transparent 65%),
+    radial-gradient(ellipse 4% 80% at 67% 100%, #ff4500 0%, transparent 85%),
+    radial-gradient(ellipse 2% 65% at 73% 100%, #ffa500 0%, transparent 70%),
+    radial-gradient(ellipse 3% 70% at 79% 100%, #ffff00 0%, transparent 75%),
+    radial-gradient(ellipse 2% 55% at 85% 100%, #dc143c 0%, transparent 65%),
+    radial-gradient(ellipse 4% 85% at 91% 100%, #ff6347 0%, transparent 85%),
+    radial-gradient(ellipse 2% 60% at 96% 100%, #ff4500 0%, transparent 70%);
+  animation: flameFlicker 1.6s ease-in-out infinite alternate-reverse;
+}
+
+/* Sakin Üçgen Alev Animasyonları */
+@keyframes triangularFlames {
+  0% {
+    transform: scaleY(1) scaleX(1) skewY(0deg);
+    opacity: 0.9;
+  }
+  25% {
+    transform: scaleY(1.05) scaleX(0.98) skewY(0.3deg);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scaleY(0.96) scaleX(1.02) skewY(-0.2deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scaleY(1.03) scaleX(0.99) skewY(0.4deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scaleY(1) scaleX(1) skewY(0deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes flameFlicker {
+  0% {
+    transform: scaleY(1) scaleX(1) translateY(0px) skewY(0deg);
+    opacity: 0.85;
+  }
+  33% {
+    transform: scaleY(1.04) scaleX(0.97) translateY(-0.5px) skewY(0.2deg);
+    opacity: 0.9;
+  }
+  66% {
+    transform: scaleY(0.97) scaleX(1.03) translateY(0.5px) skewY(-0.15deg);
+    opacity: 0.88;
+  }
+  100% {
+    transform: scaleY(1) scaleX(1) translateY(0px) skewY(0deg);
+    opacity: 0.85;
+  }
+}
+
+/* Kaya Platformları - Lavların Üstünde */
+.rock-platform {
+  position: absolute;
+  bottom: 100px; /* Lava seviyesinin tam üstü */
+  height: 25px;
+  background: linear-gradient(to bottom,
+    #8D6E63 0%,     /* Açık kahverengi kaya üst */
+    #6D4C41 30%,    /* Orta kahverengi */
+    #5D4037 60%,    /* Koyu kahverengi */
+    #4E342E 80%,    /* Çok koyu kahverengi */
+    #3E2723 100%    /* En koyu kaya alt */
+  );
+  border-radius: 8px 8px 4px 4px;
+  border: 2px solid #5D4037;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  z-index: 15;
+  transform: translateX(-50%); /* Merkez hizalama için */
+  
+  /* Kaya dokusu efekti */
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(139, 110, 99, 0.3) 2px, transparent 2px),
+    radial-gradient(circle at 60% 70%, rgba(78, 52, 46, 0.4) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(93, 64, 55, 0.3) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 40% 90%, rgba(109, 76, 65, 0.3) 1px, transparent 1px);
+}
+
+/* Endless Runner: Platform kayma animasyonu */
+.sliding-platform {
+  transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Maskot yerinde zıplama animasyonu (Endless Runner) */
+@keyframes jumpInPlace {
+  0% {
+    transform: translateY(0) scaleY(1) scaleX(1);
+  }
+  15% {
+    transform: translateY(-10px) scaleY(1.15) scaleX(0.95);
+  }
+  35% {
+    transform: translateY(-35px) scaleY(1.3) scaleX(0.85);
+  }
+  55% {
+    transform: translateY(-45px) scaleY(1.35) scaleX(0.8);
+  }
+  75% {
+    transform: translateY(-25px) scaleY(1.2) scaleX(0.9);
+  }
+  90% {
+    transform: translateY(-5px) scaleY(1.05) scaleX(0.98);
+  }
+  95% {
+    transform: translateY(-1px) scaleY(0.95) scaleX(1.03);
+  }
+  100% {
+    transform: translateY(0) scaleY(1) scaleX(1);
+  }
+}
+
+/* Kaya gölge ve derinlik efekti */
+.rock-platform::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    rgba(139, 110, 99, 0.1) 0%, 
+    rgba(78, 52, 46, 0.1) 100%);
+  border-radius: 10px 10px 6px 6px;
+  z-index: -1;
+}
+
+/* Karakter stilini güncelle */
+.character {
+  position: absolute;
+  width: 120px;
+  height: 180px;
+  background-image: url('/avatar.png');
+  background-size: contain;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  z-index: 20;
+  transform-origin: center bottom;
+  /* Endless Runner: Maskot her zaman ortada sabit */
+  left: calc(50% - 60px); /* Merkez - yarı genişlik */
+  bottom: 125px; /* Kaya üstü */
+}
+
+/* Zıplama JavaScript ile kontrol ediliyor - CSS animasyonu devre dışı */
+.character.jumping {
+  /* animation: none; - JavaScript kontrolü */
+}
+
+.character.falling {
+  animation: fallToLava 1.5s ease-in forwards;
+}
+
+/* Gerçekçi Platform Zıplama Animasyonu - Parabolik Hareket */
+@keyframes jumpEffect {
+  0% {
+    transform: translateY(0) scaleY(1) scaleX(1);
+    animation-timing-function: ease-out;
+  }
+  15% {
+    transform: translateY(-10px) scaleY(1.15) scaleX(0.95);
+    animation-timing-function: ease-out;
+  }
+  35% {
+    transform: translateY(-35px) scaleY(1.3) scaleX(0.85);
+    animation-timing-function: ease-in;
+  }
+  55% {
+    transform: translateY(-45px) scaleY(1.35) scaleX(0.8);
+    animation-timing-function: ease-in;
+  }
+  75% {
+    transform: translateY(-25px) scaleY(1.2) scaleX(0.9);
+    animation-timing-function: ease-in;
+  }
+  90% {
+    transform: translateY(-5px) scaleY(1.05) scaleX(0.98);
+    animation-timing-function: ease-out;
+  }
+  95% {
+    transform: translateY(-1px) scaleY(0.95) scaleX(1.03);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(0) scaleY(1) scaleX(1);
+    animation-timing-function: ease-out;
+  }
+}
+
+/* Lav Zeminine Düşme Animasyonu */
+@keyframes fallToLava {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg) scaleY(1) scaleX(1) translateY(0px);
+  }
+  20% {
+    transform: rotate(15deg) scaleY(0.95) scaleX(1.05) translateY(20px);
+    opacity: 0.95;
+  }
+  40% {
+    transform: rotate(35deg) scaleY(0.8) scaleX(1.2) translateY(50px);
+    opacity: 0.8;
+  }
+  60% {
+    transform: rotate(60deg) scaleY(0.6) scaleX(1.1) translateY(80px);
+    opacity: 0.6;
+  }
+  80% {
+    transform: rotate(85deg) scaleY(0.3) scaleX(0.8) translateY(100px);
+    opacity: 0.3;
+  }
+  100% {
+    transform: rotate(90deg) scaleY(0.1) scaleX(0.5) translateY(120px);
+    opacity: 0;
+  }
+}
+
+/* Game Over Dramatik Animasyon */
+@keyframes gameOverDrama {
+  0% {
+    transform: scale(0.5) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Ateş Parlaklık Animasyonu */
+@keyframes fireGlow {
+  0% {
+    box-shadow: 
+      0 0 20px #ff4500,
+      0 0 40px #dc143c,
+      inset 0 -20px 30px rgba(255, 255, 0, 0.3);
+  }
+  100% {
+    box-shadow: 
+      0 0 30px #ff6347,
+      0 0 60px #ff4500,
+      inset 0 -30px 40px rgba(255, 165, 0, 0.5);
+  }
+}
+
+/* Karakter pozisyonları artık dinamik olarak JavaScript'te hesaplanıyor */
+
+.game-over {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over h1 {
+  color: #FFB6C1;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 
+    0 0 15px rgba(255, 182, 193, 0.8),
+    0 0 30px rgba(255, 182, 193, 0.6),
+    2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: gameOverDrama 1.5s ease-out forwards, pulse 2s infinite 1.5s;
+}
+
+.game-over p {
+  color: #FFB6C1;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.game-over button {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFA0B4 100%);
+  color: #2c3e50;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.game-over button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+  background: linear-gradient(135deg, #FFA0B4 0%, #FF8FA3 100%);
+}
+
+.success-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom right, #ffc0cb, #ff69b4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.success-screen h1 {
+  color: white;
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: bounce 1s infinite;
+}
+
+.success-screen p {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.success-screen button {
+  background: white;
+  color: #27ae60;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.success-screen button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: #f0f0f0;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  transition: width 0.5s ease;
+  z-index: 1000;
+} 
