@@ -848,7 +848,21 @@ body::after {
   }
   
   .game-area {
-    height: 250px;
+    height: 320px; /* Avatar kafası kesilmesin diye artırıldı */
+  }
+  
+  /* Mobile - Avatar boyutunu küçült */
+  .character {
+    width: 90px;
+    height: 135px;
+    left: calc(50% - 45px); /* Yeni genişliğin yarısı */
+    bottom: 125px;
+  }
+  
+  /* Mobile - Platform boyutlarını optimize et */
+  .rock-platform {
+    height: 20px;
+    bottom: 100px;
   }
   
   .game-over h1 {
@@ -913,6 +927,25 @@ body::after {
   }
   
   .game-area {
-    height: 200px;
+    height: 280px; /* Avatar kafası kesilmesin diye artırıldı */
+  }
+  
+  /* Çok küçük ekranlar - Avatar daha da küçült */
+  .character {
+    width: 80px;
+    height: 120px;
+    left: calc(50% - 40px); /* Yeni genişliğin yarısı */
+    bottom: 120px;
+  }
+  
+  /* Çok küçük ekranlar - Platform boyutlarını daha da optimize et */
+  .rock-platform {
+    height: 18px;
+    bottom: 95px;
+  }
+  
+  /* Lava floor yüksekliğini de küçült */
+  .lava-floor {
+    height: 80px;
   }
 }

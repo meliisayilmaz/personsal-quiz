@@ -56,14 +56,29 @@ export default function TestPage() {
     
     const gameAreaWidth = gameAreaRef.current.offsetWidth
     
+    // Responsive character boyutları
+    let characterWidth = 120 // Desktop varsayılan
+    let characterY = 125 // Desktop varsayılan
+    
+    if (window.innerWidth <= 480) {
+      // Çok küçük ekranlar
+      characterWidth = 80
+      characterY = 120
+    } else if (window.innerWidth <= 768) {
+      // Mobile ekranlar  
+      characterWidth = 90
+      characterY = 125
+    }
+    
     // Maskot her zaman ekranın ortasında (50% pozisyonda) sabit durur
-    const characterX = (gameAreaWidth * 0.5) - 60 // Maskot genişliğinin yarısı (120px/2)
-    const characterY = 125 // Kaya yüksekliği (25px) + lava yüksekliği (100px)
+    const characterX = (gameAreaWidth * 0.5) - (characterWidth / 2)
     
     console.log(`🎯 Maskot sabit pozisyon:`, {
       gameAreaWidth: Math.round(gameAreaWidth),
       characterX: Math.round(characterX),
       characterY,
+      characterWidth,
+      screenWidth: window.innerWidth,
       centerPercent: '50%'
     })
     
@@ -99,7 +114,7 @@ export default function TestPage() {
       }, 800)
   }
 
-  // Başlangıç pozisyonunu ayarla
+  // Başlangıç pozisyonunu ayarla ve resize olaylarını dinle
   useEffect(() => {
     const positionCharacter = () => {
       if (gameAreaRef.current && characterRef.current) {
@@ -113,15 +128,31 @@ export default function TestPage() {
       return false
     }
 
-    // Kısa bir gecikme ile pozisyonlama (DOM'un yüklenmesini bekle)
+    // Resize event handler - mobile döndürme için
+    const handleResize = () => {
+      console.log(`📱 Resize algılandı: ${window.innerWidth}x${window.innerHeight}`)
+      setTimeout(() => {
+        positionCharacter()
+      }, 100) // DOM güncellenmesini bekle
+    }
+
+    // İlk pozisyonlama
     const timer = setTimeout(() => {
       if (!positionCharacter()) {
         // Başarısız olursa bir kez daha dene
         setTimeout(positionCharacter, 200)
       }
     }, 50)
+
+    // Resize event listener ekle
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('orientationchange', handleResize)
     
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
+    }
   }, [])
   
   const handleAnswer = (selectedIndex: number) => {
@@ -171,7 +202,7 @@ export default function TestPage() {
     
     console.log(`🔄 Oyun sıfırlandı - Başlangıç pozisyonu`)
     
-    // Başlangıç pozisyonuna geri dön
+    // Başlangıç pozisyonuna geri dön - responsive hesaplama ile
     setTimeout(() => {
       if (characterRef.current) {
         const startPosition = calculateCharacterPosition()
@@ -179,7 +210,7 @@ export default function TestPage() {
         characterRef.current.style.bottom = `${startPosition.y}px`
         characterRef.current.style.transition = 'none'
         characterRef.current.style.animation = ''
-        console.log(`🎮 Reset: Maskot sabit pozisyonda`, startPosition)
+        console.log(`🎮 Reset: Maskot sabit pozisyonda (responsive)`, startPosition)
       }
     }, 100)
   }
