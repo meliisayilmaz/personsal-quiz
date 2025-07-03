@@ -3,6 +3,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { questions, Question } from '@/data/questions'
 
+interface PlatformData {
+  id: number;
+  globalIndex: number;
+  leftPercent: number;
+  widthPx: number;
+  isCurrentPlatform: boolean;
+}
+
 export default function TestPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [gameState, setGameState] = useState<'playing' | 'game-over' | 'success'>('playing')
@@ -10,6 +18,7 @@ export default function TestPage() {
   const [currentRockIndex, setCurrentRockIndex] = useState(0) // Hangi kayada
   const [visiblePlatforms, setVisiblePlatforms] = useState(6) // Görünür platform sayısı
   const [showGameArea, setShowGameArea] = useState(true)
+  const [platformData, setPlatformData] = useState<PlatformData[]>([]) // Platform verilerini state'te tutuyoruz
 
   const gameAreaRef = useRef<HTMLDivElement>(null)
   const characterRef = useRef<HTMLDivElement>(null)
@@ -25,7 +34,20 @@ export default function TestPage() {
   // Görünür platformları hesapla - sağdan sola kayıyor
   const getVisiblePlatforms = () => {
     const platforms = []
-    const platformSpacing = 20 // Platformlar arası %20 mesafe
+    
+    // Responsive platform boyutları
+    let platformSpacing = 20 // Desktop: Platformlar arası %20 mesafe
+    let platformWidth = 150  // Desktop: 150px genişlik
+    
+    if (window.innerWidth <= 480) {
+      // Çok küçük ekranlar - daha dar aralıklar
+      platformSpacing = 25 // %25 mesafe (daha geniş)
+      platformWidth = 100   // 100px genişlik
+    } else if (window.innerWidth <= 768) {
+      // Mobile ekranlar
+      platformSpacing = 23  // %23 mesafe
+      platformWidth = 120   // 120px genişlik
+    }
     
     // 5 platform görünür: biri geride, biri maskotun altında, 3'ü ileride
     for (let i = -1; i <= 3; i++) {
@@ -38,17 +60,26 @@ export default function TestPage() {
           id: platformIndex,
           globalIndex: platformIndex,
           leftPercent: basePosition, // Offset kaldırıldı - maskotun altında hep platform olsun
-          widthPx: 150,
+          widthPx: platformWidth,
           isCurrentPlatform: i === 0 // Maskotun üzerindeki platform
         })
       }
     }
     
-    console.log(`🪨 Görünür platformlar:`, platforms.map(p => `${p.id}:${p.leftPercent}%`))
+    console.log(`🪨 Görünür platformlar (${window.innerWidth}px):`, platforms.map(p => `${p.id}:${p.leftPercent}% (${p.widthPx}px)`))
     return platforms
   }
 
-  const visibleRockPlatforms = getVisiblePlatforms()
+  // Platform verilerini güncelleyen fonksiyon
+  const updatePlatformData = () => {
+    const newPlatforms = getVisiblePlatforms()
+    setPlatformData(newPlatforms)
+  }
+
+  // Component mount olduğunda platformları hesapla
+  useEffect(() => {
+    updatePlatformData()
+  }, [currentRockIndex]) // currentRockIndex değiştiğinde de güncelle
 
   // Endless Runner: Maskot her zaman merkezi pozisyonda sabit
   const calculateCharacterPosition = () => {
@@ -133,6 +164,7 @@ export default function TestPage() {
       console.log(`📱 Resize algılandı: ${window.innerWidth}x${window.innerHeight}`)
       setTimeout(() => {
         positionCharacter()
+        updatePlatformData() // Platformları da yeniden hesapla
       }, 100) // DOM güncellenmesini bekle
     }
 
@@ -210,6 +242,7 @@ export default function TestPage() {
         characterRef.current.style.bottom = `${startPosition.y}px`
         characterRef.current.style.transition = 'none'
         characterRef.current.style.animation = ''
+        updatePlatformData() // Platformları da yeniden hesapla
         console.log(`🎮 Reset: Maskot sabit pozisyonda (responsive)`, startPosition)
       }
     }, 100)
@@ -369,7 +402,7 @@ export default function TestPage() {
       {showGameArea && (
         <div className="game-area" ref={gameAreaRef}>
           {/* Kaya Platformları */}
-          {visibleRockPlatforms.map((rock) => (
+          {platformData.map((rock) => (
             <div
               key={rock.id}
               className="rock-platform sliding-platform"
